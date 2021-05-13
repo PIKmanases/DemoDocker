@@ -1,0 +1,44 @@
+FULL STACK WITH DOCKER
+------ BASE DE DATOS ------
+# Obtener imagen de Dockerhub
+docker run -d -p 33060:3306 --name mysql-db -e MYSQL_ROOT_PASSWORD=secret mysq
+# Ingresar al contenedor
+docker exec -it mysql-db mysql -p
+
+#Opcional volumenes
+   #Eliminar volumen anterior
+	docker rm -f mysql-db
+   # Eliminar volumenes temporales
+	docker volume prune
+   # Crear volumen
+	docker volume create mysql-db-data
+   # Verificar volumen
+	docker volume ls
+   # Levantar volumen con --mount
+	 docker run -d -p 33060:3306 --name mysql-db  -e MYSQL_ROOT_PASSWORD=secret --mount src=mysql-db-data,dst=/var/lib/mysql mysql
+	
+--------- CONECTAR A NODE JS --------
+instalar npm 
+instalar node js
+
+npm init
+npm install express
+npm install mysql
+npm install body-parser --save
+npm install cors
+npm install nodemon --save
+
+# Error ER_NOT_SUPPORTED_AUTH_MODE
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'
+
+flush privileges;
+# SI NO FUNCIONA:
+ALTER USER 'root' IDENTIFIED WITH mysql_native_password BY 'password';
+
+# Dockerfile
+# Crear imagen
+docker build -t demonode .
+# Correr imagen
+docker run -p 3000:3000 demonode 
+
+
